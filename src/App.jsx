@@ -1,19 +1,33 @@
 import "./App.css";
-import useWeather from "./hooks/useWeather";
+import Otro from "./components/Otro";
+import useCatFact from "./hooks/useCatFact";
+import useGif from "./hooks/useGif";
 
 const App = () => {
-  const { data } = useWeather();
+  const { fact, refreshFact } = useCatFact();
+  const { gif } = useGif({ fact });
 
-  const CITY = data.name;
-  const TIMEZONE = data.timezone;
-  const TEMPERATURE = data.main?.temp;
+  const handleClick = async () => {
+    refreshFact();
+  };
 
   return (
     <div>
-      <h1>Puro entreno</h1>
-      <h2>{CITY}</h2>
-      <h2>{TIMEZONE}</h2>
-      <h2>{TEMPERATURE}</h2>
+      <header>
+        <h1>App de Gifs :)</h1>
+        <button onClick={handleClick}>Rechercher:</button>
+      </header>
+      <main>
+        {fact && <p>{fact}</p>}
+        {gif && (
+          <img
+            src={gif}
+            alt={`Image extracted from the first two words of: ${fact}`}
+          />
+        )}
+
+        <Otro />
+      </main>
     </div>
   );
 };
